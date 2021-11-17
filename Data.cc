@@ -94,11 +94,51 @@ double Data::Background(int n){
 
 double Data::Chi (){
   double chisq=0;
-  int ndf;
+  int ndf = 52;
 
   for(int i=0; i<m_data.size();i++){
     chisq+=(pow(measurement(i)-Background(i),2))/(pow(error(i),2));
   }
   
   return chisq/ndf;
+}
+
+std::vector<double> Data::Backgroundcompatibility(int n){
+    std::vector <double> outsiders;
+    for (int i=0; i<m_data.size(); i++){
+      if (n*error(i)<abs((measurement(i)-Background(i))))
+      {
+        outsiders.push_back(i);
+      }
+    }
+    return outsiders;
+  }
+
+  double Data::Average_Four(const Data& b, const Data& c, const Data& d){
+
+  double w1;
+  double w2;
+  double w3;
+  double w4;
+
+
+    for(int i=0;i<m_data.size();i++){
+      
+      w1=1/pow(error(i),2);
+      w2=1/pow(b.error(i),2);
+      w3=1/pow(c.error(i),2);
+      w4=1/pow(d.error(i),2);
+      
+      m_average_four.push_back((w1*measurement(i) + w2*b.measurement(i)+w3*c.measurement(i)+w4*d.measurement(i))/(w1+w2+w3+w4));
+      m_average_uncertainty_four.push_back(sqrt(1/(w1+w2+w3+w4)));
+    } 
+
+  double chisq=0;
+  int ndf = 52;
+
+  for(int i=0; i<m_data.size();i++){
+    chisq+=(pow(m_average_four[i]-Background(i),2))/(pow(m_average_uncertainty_four[i],2));
+  }
+  return chisq/ndf;
+
 }

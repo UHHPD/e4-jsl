@@ -1,15 +1,14 @@
-#include <iostream>
-#include <vector>
-#include <functional>
-#include <string>
 #include <cmath>
+#include <functional>
+#include <iostream>
+#include <string>
+#include <vector>
 
 #include "Data.hh"
 
 // generic function comparing two values of some type T used later for int and
 // double
-template <class T>
-bool testEqual(const std::string& name, T expected, T real) {
+template <class T> bool testEqual(const std::string &name, T expected, T real) {
   if (expected != real) {
     std::cout << "(" << name << ": <" << expected << ">"
               << ", " << real << ") ";
@@ -47,21 +46,19 @@ bool testCopyConstructor() {
   std::cout << "testCopyConstructor...";
   Data a("testA");
   Data b(a);
-  Data c = a;  // equivalent to Data c(a)
+  Data c = a; // equivalent to Data c(a)
   return testEqual("measurement", 10., b.measurement(0)) &&
          testEqual("measurement", 10., c.measurement(0));
 }
 
 void runTests() {
   std::cout << "running tests...\n";
-  std::vector<std::function<bool()> > tests(
+  std::vector<std::function<bool()>> tests(
       {testReadingSize, testReadingMeasurement, testReadingBinEdges,
        testReadingErrors, testCopyConstructor});
   for (auto test : tests)
     std::cout << (test() ? " ok" : " FAILED!") << std::endl;
 }
-
-
 
 int main() {
   using namespace std;
@@ -81,28 +78,173 @@ int main() {
   cout << "measurement of experiment A in bin 27: " << datA.measurement(27)
        << endl;
 
-       // here is the data from experiment B
+  // here is the data from experiment B
   cout << "measurement of experiment B in bin 27: " << datB.measurement(27)
        << endl;
 
-       // here is the data from experiment C
+  // here is the data from experiment C
   cout << "measurement of experiment C in bin 27: " << datC.measurement(27)
        << endl;
 
-       // here is the data from experiment A
+  // here is the data from experiment D
   cout << "measurement of experiment D in bin 27: " << datD.measurement(27)
        << endl;
-  
-  cout << "check for compatibility for bin 27 of sample A and B: " << datB.measurement(27)-datA.measurement(27) << " < " << sqrt(pow(datB.error(27),2)+pow(datA.error(27),2)) << endl;
 
-  cout << "check for compatibility of sample A and B: " << datA.checkCompatibility(datB,1) << endl;
+  cout << "check for compatibility for bin 27 of sample A and B: "
+       << datB.measurement(27) - datA.measurement(27) << " < "
+       << sqrt(pow(datB.error(27), 2) + pow(datA.error(27), 2)) << endl;
+
+  cout << "check for compatibility of sample A and B: "
+       << datA.checkCompatibility(datB, 1) << endl;
 
   datA.Average(datB);
 
   cout << "4th entry of data set A and B averaged: " << datA.average(3) << endl;
 
-  cout << "Test" << datB.Background(3) << endl;
-  cout << "Test" << datA.Background(3) << endl;
+  cout << "Test " << datB.Background(3) << endl;
+  cout << "Test " << datA.Background(3) << endl;
+  // print 2a to console:
+  int stddev;
+
+  //--------------------------------------------------
+
+  cout << "-------------------------------" << endl;
+
+  cout << "Values for Data Set A:" << endl;
+
+  stddev = 2;
+
+  cout << "outsiders for " << stddev
+       << " Standard Deviation(s) in data set A: { ";
+
+  for (int i = 0; i < datA.Backgroundcompatibility(stddev).size(); i++) {
+    cout << datA.Backgroundcompatibility(stddev)[i] << " ";
+  }
+  cout << "}" << endl;
+
+  cout << "This means there are " << datA.Backgroundcompatibility(stddev).size()
+       << " Outsider(s) in " << stddev << " Standard Deviation(s)." << endl;
+
+  stddev = 3;
+
+  cout << "outsiders for " << stddev
+       << " Standard Deviation(s) in data set A: { ";
+  for (int i = 0; i < datA.Backgroundcompatibility(stddev).size(); i++) {
+    cout << datA.Backgroundcompatibility(stddev)[i] << " ";
+  }
+  cout << "}" << endl;
+
+  cout << "This means there are " << datA.Backgroundcompatibility(stddev).size()
+       << " Outsider(s) in " << stddev << " Standard Deviation(s)." << endl;
+
+  cout << "The Chi squared / ndf value for Data Set A is: " << datA.Chi()
+       << endl;
+
+  cout << "-------------------------------" << endl;
+
+  //-----------------------------
+
+  cout << "Values for Data Set B:" << endl;
+
+  stddev = 2;
+
+  cout << "outsiders for " << stddev
+       << " Standard Deviation(s) in data set B: { ";
+
+  for (int i = 0; i < datB.Backgroundcompatibility(stddev).size(); i++) {
+    cout << datB.Backgroundcompatibility(stddev)[i] << " ";
+  }
+  cout << "}" << endl;
+
+  cout << "This means there are " << datB.Backgroundcompatibility(stddev).size()
+       << " Outsider(s) in " << stddev << " Standard Deviation(s)." << endl;
+
+  stddev = 3;
+
+  cout << "outsiders for " << stddev
+       << " Standard Deviation(s) in data set B: { ";
+  for (int i = 0; i < datB.Backgroundcompatibility(stddev).size(); i++) {
+    cout << datB.Backgroundcompatibility(stddev)[i] << " ";
+  }
+  cout << "}" << endl;
+
+  cout << "This means there are " << datB.Backgroundcompatibility(stddev).size()
+       << " Outsider(s) in " << stddev << " Standard Deviation(s)." << endl;
+
+  cout << "The Chi squared / ndf value for Data Set B is: " << datB.Chi()
+       << endl;
+
+  cout << "-------------------------------" << endl;
+
+  //-----------------------------
+
+  cout << "Values for Data Set C:" << endl;
+
+  stddev = 2;
+
+  cout << "outsiders for " << stddev
+       << " Standard Deviation(s) in data set C: { ";
+
+  for (int i = 0; i < datC.Backgroundcompatibility(stddev).size(); i++) {
+    cout << datC.Backgroundcompatibility(stddev)[i] << " ";
+  }
+  cout << "}" << endl;
+
+  cout << "This means there are " << datC.Backgroundcompatibility(stddev).size()
+       << " Outsider(s) in " << stddev << " Standard Deviation(s)." << endl;
+
+  stddev = 3;
+
+  cout << "outsiders for " << stddev
+       << " Standard Deviation(s) in data set C: { ";
+  for (int i = 0; i < datC.Backgroundcompatibility(stddev).size(); i++) {
+    cout << datC.Backgroundcompatibility(stddev)[i] << " ";
+  }
+  cout << "}" << endl;
+
+  cout << "This means there are " << datC.Backgroundcompatibility(stddev).size()
+       << " Outsider(s) in " << stddev << " Standard Deviation(s)." << endl;
+
+  cout << "The Chi squared / ndf value for Data Set C is: " << datC.Chi()
+       << endl;
+
+  cout << "-------------------------------" << endl;
+  //-----------------------------
+
+  cout << "Values for Data Set D:" << endl;
+
+  stddev = 2;
+
+  cout << "outsiders for " << stddev
+       << " Standard Deviation(s) in data set D: { ";
+
+  for (int i = 0; i < datD.Backgroundcompatibility(stddev).size(); i++) {
+    cout << datD.Backgroundcompatibility(stddev)[i] << " ";
+  }
+  cout << "}" << endl;
+
+  cout << "This means there are " << datD.Backgroundcompatibility(stddev).size()
+       << " Outsider(s) in " << stddev << " Standard Deviation(s)." << endl;
+
+  stddev = 3;
+
+  cout << "outsiders for " << stddev
+       << " Standard Deviation(s) in data set D: { ";
+  for (int i = 0; i < datD.Backgroundcompatibility(stddev).size(); i++) {
+    cout << datD.Backgroundcompatibility(stddev)[i] << " ";
+  }
+  cout << "}" << endl;
+
+  cout << "This means there are " << datD.Backgroundcompatibility(stddev).size()
+       << " Outsider(s) in " << stddev << " Standard Deviation(s)." << endl;
+
+  cout << "The Chi squared / ndf value for Data Set D is: " << datD.Chi()
+       << endl;
+
+  cout << "-------------------------------" << endl;
+  
+cout << datA.Average_Four(datB,datC,datD) << endl;
+cout << " " << datA.average_Four(3) << endl;
 
   return 0;
 }

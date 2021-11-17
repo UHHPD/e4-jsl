@@ -9,6 +9,7 @@ class Data {
   Data(const std::string& filename);
   int checkCompatibility(const Data& in, int n);
   double Average(const Data& in);
+  double Average_Four(const Data& b, const Data& c, const Data& d);
 
   unsigned int size() const { return m_data.size(); }
   double measurement(int i) const { return m_data[i]; }
@@ -20,6 +21,8 @@ class Data {
   double average_uncertainty(int i) const { return m_average_uncertainty[i]; }
   double Background(int n);
   double Chi();
+  std::vector<double> Backgroundcompatibility(int n);
+  double average_Four(int i) const {return m_average_four[i];}
 
  private:
   Data() {}  // disallow empty data set
@@ -30,6 +33,8 @@ class Data {
   std::vector<double> m_average;
   std::vector<double> m_average_uncertainty;
   std::vector<double> m_background;
+  std::vector<double> m_average_four;
+  std::vector<double> m_average_uncertainty_four;
 };
 
 #endif
