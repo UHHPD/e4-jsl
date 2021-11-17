@@ -76,3 +76,29 @@ double Data::Average(const Data& in){
   }
 
 }
+
+double Data::Background(int n){
+
+  double alpha = 0.005;
+  double beta = -0.00001;
+  double gamma = 0.08;
+  double delta = 0.015;
+
+  for(int i=0;i<m_data.size();i++){
+  m_background.push_back(alpha+beta*binCenter(i)+gamma*exp(-delta*binCenter(i)));
+  }
+
+  return m_background[n];
+
+}
+
+double Data::Chi (){
+  double chisq=0;
+  int ndf;
+
+  for(int i=0; i<m_data.size();i++){
+    chisq+=(pow(measurement(i)-Background(i),2))/(pow(error(i),2));
+  }
+  
+  return chisq/ndf;
+}

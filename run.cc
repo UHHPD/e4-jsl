@@ -62,6 +62,7 @@ void runTests() {
 }
 
 
+
 int main() {
   using namespace std;
 
@@ -98,7 +99,10 @@ int main() {
 
   datA.Average(datB);
 
-  cout << datA.average(3);
+  cout << "4th entry of data set A and B averaged: " << datA.average(3) << endl;
+
+  cout << "Test" << datB.Background(3) << endl;
+  cout << "Test" << datA.Background(3) << endl;
 
   return 0;
 }

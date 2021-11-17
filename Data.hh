@@ -18,6 +18,8 @@ class Data {
   double error(int i) const { return m_errors[i]; }
   double average(int i) const { return m_average[i];}
   double average_uncertainty(int i) const { return m_average_uncertainty[i]; }
+  double Background(int n);
+  double Chi();
 
  private:
   Data() {}  // disallow empty data set
@@ -27,6 +29,7 @@ class Data {
   std::vector<double> m_errors;
   std::vector<double> m_average;
   std::vector<double> m_average_uncertainty;
+  std::vector<double> m_background;
 };
 
 #endif
