@@ -4,6 +4,7 @@
 #include <fstream>
 #include <cassert>
 #include <stdexcept>
+#include <cmath>
 
 using namespace std;
 
@@ -32,6 +33,13 @@ Data::Data(const std::string& filename) {
     m_data.push_back(entries);
   }
 
+  // read in data from file: m_siz error contents
+  for (int i = 0; i < size; ++i) {
+    double errors;
+    file >> errors;
+    m_errors.push_back(errors);
+  }
+
   // done! close the file
   file.close();
 
@@ -39,3 +47,32 @@ Data::Data(const std::string& filename) {
 };
 
 void Data::assertSizes() { assert(m_data.size() + 1 == m_bins.size()); }
+
+int Data::checkCompatibility(const Data& in, int n){
+  int outsiders=0;
+    for (int i=0; i<m_data.size(); i++){
+      if (n*sqrt(pow(error(i),2)+pow(in.error(i),2))<abs((measurement(i)-in.measurement(i))))
+      {
+        outsiders++;
+      }
+    }
+    return outsiders;
+  }
+
+
+double Data::Average(const Data& in){
+
+  double w1;
+  double w2;
+
+  if(checkCompatibility(in, 1)/m_data.size()<0.6827 && checkCompatibility(in, 2)/m_data.size()<0.9545 && checkCompatibility(in, 3)/m_data.size()<0.9973)
+  {
+    for(int i=0;i<m_data.size();i++){
+      w1=1/pow(error(i),2);
+      w2=1/pow(in.error(i),2);
+      m_average.push_back((w1*measurement(i) + w2*in.measurement(i))/(w1+w2));
+      m_average_uncertainty.push_back(sqrt(1/(w1+w2)));
+    } 
+  }
+
+}

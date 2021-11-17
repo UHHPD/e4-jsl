@@ -2,6 +2,7 @@
 #include <vector>
 #include <functional>
 #include <string>
+#include <cmath>
 
 #include "Data.hh"
 
@@ -60,6 +61,7 @@ void runTests() {
     std::cout << (test() ? " ok" : " FAILED!") << std::endl;
 }
 
+
 int main() {
   using namespace std;
 
@@ -68,12 +70,35 @@ int main() {
   cout << "******************************************************" << endl;
   // create an object which holds data of experiment A
   Data datA("exp_A");
+  Data datB("exp_B");
+  Data datC("exp_C");
+  Data datD("exp_D");
 
   // here is the data from experiment A
   cout << "bin 27: from " << datA.binLow(27) << " to " << datA.binHigh(27)
        << endl;
   cout << "measurement of experiment A in bin 27: " << datA.measurement(27)
        << endl;
+
+       // here is the data from experiment B
+  cout << "measurement of experiment B in bin 27: " << datB.measurement(27)
+       << endl;
+
+       // here is the data from experiment C
+  cout << "measurement of experiment C in bin 27: " << datC.measurement(27)
+       << endl;
+
+       // here is the data from experiment A
+  cout << "measurement of experiment D in bin 27: " << datD.measurement(27)
+       << endl;
+  
+  cout << "check for compatibility for bin 27 of sample A and B: " << datB.measurement(27)-datA.measurement(27) << " < " << sqrt(pow(datB.error(27),2)+pow(datA.error(27),2)) << endl;
+
+  cout << "check for compatibility of sample A and B: " << datA.checkCompatibility(datB,1) << endl;
+
+  datA.Average(datB);
+
+  cout << datA.average(3);
 
   return 0;
 }
