@@ -95,14 +95,23 @@ int main() {
        << sqrt(pow(datB.error(27), 2) + pow(datA.error(27), 2)) << endl;
 
   cout << "check for compatibility of sample A and B: "
-       << datA.checkCompatibility(datB, 1) << endl;
+       << datA.checkCompatibility(datB, 2) << endl;
+  
+  cout << "check for compatibility of sample C and A: "
+       << datC.checkCompatibility(datA, 2) << endl;
+
+  cout << "check for compatibility of sample C and B: "
+       << datC.checkCompatibility(datB, 2) << endl;   
+
+  cout << "check for compatibility of sample C and D: "
+       << datC.checkCompatibility(datD, 2) << endl;       
 
   datA.Average(datB);
 
   cout << "4th entry of data set A and B averaged: " << datA.average(3) << endl;
 
-  cout << "Test " << datB.Background(3) << endl;
-  cout << "Test " << datA.Background(3) << endl;
+  //cout << "Test " << datB.Background(3) << endl;
+  //cout << "Test " << datA.Background(3) << endl;
   // print 2a to console:
   int stddev;
 
@@ -243,8 +252,15 @@ int main() {
 
   cout << "-------------------------------" << endl;
   
-cout << datA.Average_Four(datB,datC,datD) << endl;
-cout << " " << datA.average_Four(3) << endl;
+cout << "The Chi squared / ndf value of the combined Dataset is: " << datA.Average_Four(datB,datC,datD) << endl;
+
+//The Value of Chi squared / ndf of the combined Dataset was calculated to 1.49072 by us. We expedcted a value around 1, because Combining multiple measurments should normaly lead to a increased agreement between the combined Data and the model.
+
+//We have an idea where this might come from:
+
+//Between the values M=150 and M=200 GeV the measured values are well above the fit. Their error could add up to increase the Chi squared / ndf value.
+
+//A Combination of a Dataset with itself (4 times) led to the expected values of the combined Data as well as the uncertainty and the Chi squared / ndf, which is why we don't see an obvious problem in the code.
 
   return 0;
 }
